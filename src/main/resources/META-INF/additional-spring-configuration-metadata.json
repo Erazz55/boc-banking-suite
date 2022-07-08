@@ -1,0 +1,39 @@
+{
+  "properties": [
+    {
+      "name": "app.token.secret",
+      "type": "java.lang.String",
+      "description": "Description for app.token.secret."
+    },
+    {
+      "name": "app.token.access.expiry",
+      "type": "java.lang.Integer",
+      "description": "Description for app.token.exiry."
+    },
+    {
+      "name": "app.token.reset.expiry",
+      "type": "java.lang.Integer",
+      "description": "Description for app.token.reset.expiry."
+    },
+    {
+      "name": "app.redis.host",
+      "type": "java.lang.String",
+      "description": "Description for app.redis.host."
+    },
+    {
+      "name": "app.redis.port",
+      "type": "java.lang.Integer",
+      "description": "Description for app.redis.port."
+    },
+    {
+      "name": "app.token.refresh.expiry",
+      "type": "java.lang.Integer",
+      "description": "Description for app.token.refresh.expiry."
+    },
+    {
+      "name": "app.address",
+      "type": "java.lang.String",
+      "description": "Description for app.address."
+    }
+  ]
+}
