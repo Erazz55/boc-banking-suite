@@ -1,6 +1,7 @@
 package com.icptechno.admincore.features.billpayment.service.impl;
 
 import com.icptechno.admincore.features.billpayment.payload.BillPaymentRequest;
+import com.icptechno.admincore.features.billpayment.payload.CheckBillRequest;
 import com.icptechno.admincore.features.billpayment.payload.CheckBillResponse;
 import com.icptechno.admincore.features.billpayment.payload.Response;
 import com.icptechno.admincore.features.billpayment.service.BillPaymentService;
@@ -18,8 +19,8 @@ public class BillPaymentImpl implements BillPaymentService {
 
     /**Check bill payment by passing mobile number*/
     @Override
-    public CheckBillResponse checkBill( final String mobile) {
-        return billPaymentHelper.checkBillHandler(mobile);
+    public CheckBillResponse checkBill( final CheckBillRequest request) {
+        return billPaymentHelper.checkBillHandler(request);
     }
 
 

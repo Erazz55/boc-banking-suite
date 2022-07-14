@@ -5,9 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CheckBillResponseData {
+public class CheckBillRequest {
+    private String biller;
     private String mobile;
-    private String balance;
-    private String billAmount;
-    private String type;
 }

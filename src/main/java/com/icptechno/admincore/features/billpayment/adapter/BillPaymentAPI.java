@@ -1,6 +1,7 @@
 package com.icptechno.admincore.features.billpayment.adapter;
 
 import com.icptechno.admincore.features.billpayment.payload.BillPaymentRequest;
+import com.icptechno.admincore.features.billpayment.payload.CheckBillRequest;
 import com.icptechno.admincore.features.billpayment.payload.CheckBillResponse;
 import com.icptechno.admincore.features.billpayment.payload.Response;
 import com.icptechno.admincore.features.billpayment.service.BillPaymentService;
@@ -14,9 +15,9 @@ public class BillPaymentAPI {
     @Autowired
     private BillPaymentService billPaymentService;
 
-    @GetMapping(value = "/{mobile}")
-    public CheckBillResponse checkBill(@PathVariable String mobile){
-        return billPaymentService.checkBill(mobile);
+    @PostMapping(value = "/check-bill")
+    public CheckBillResponse checkBill(@RequestBody CheckBillRequest request){
+        return billPaymentService.checkBill(request);
     }
 
     @PostMapping(value = "")
