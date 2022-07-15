@@ -66,13 +66,13 @@ public class BillPaymentHelper {
                 CheckBillResponse.class,
                 request.getMobile());
 
-        final CheckBillResponse response = new CheckBillResponse();
-        response.setData(exchange.getBody().getData());
-        response.setCode(9000);
-        response.setMessage("Done");
-        response.setTitle("SUCCESS");
+//        final CheckBillResponse response = new CheckBillResponse();
+//        response.setData(exchange.getBody().getData());
+//        response.setCode(9000);
+//        response.setMessage("Done");
+//        response.setTitle("SUCCESS");
 
-        return response;
+        return exchange.getBody();
     }
 
     public Response doBillPayment(final BillPaymentRequest request){
