@@ -32,51 +32,45 @@ public class BillPaymentHelper {
         headers.set("Content-Type", "application/json");
         headers.set("Accept", "*/*");
         headers.set("Authorization",TOKEN) ;
+        HttpEntity headerRequest = new HttpEntity(headers);
 
         /**Set service-provider header by considering the biller code*/
         switch (request.getBiller()){
-            case "GSMU003900":
+            case "dialog":
                 headers.set("service-provider", "Dialog");
-                break;
-
-            case "GSMU004900":
-                headers.set("service-provider", "Dialog");
-                break;
+                return restTemplate.exchange(
+                        "https://localhost:8243/dialog-bill-pay/1.0/dialog/{mobile}/check/bill",
+                        HttpMethod.GET,
+                        headerRequest,
+                        CheckBillResponse.class,
+                        request.getMobile()).getBody();
 
             case "mobitel":
                 headers.set("service-provider", "Mobitel");
-                break;
+                return restTemplate.exchange(
+                        "https://localhost:8243/mobitel-bill-pay/1.0/mobitel/{mobile}/check/bill",
+                        HttpMethod.GET,
+                        headerRequest,
+                        CheckBillResponse.class,
+                        request.getMobile()).getBody();
 
             case "etisalat":
                 headers.set("service-provider", "Etisalat");
-                break;
+                return restTemplate.exchange(
+                        "https://localhost:8243/etisalat-bill-pay/1.0/etisalat/{mobile}/check/bill",
+                        HttpMethod.GET,
+                        headerRequest,
+                        CheckBillResponse.class,
+                        request.getMobile()).getBody();
 
             default:
                 headers.set("service-provider", "");
+                return null;
         }
 
-        HttpEntity headerRequest = new HttpEntity(headers);
-
-        System.out.println(headerRequest);
-
-        final ResponseEntity<CheckBillResponse> exchange = restTemplate.exchange(
-                "https://localhost:8243/dialog-bill-pay/1.0/dialog/{mobile}/check/bill",
-                HttpMethod.GET,
-                headerRequest,
-                CheckBillResponse.class,
-                request.getMobile());
-
-//        final CheckBillResponse response = new CheckBillResponse();
-//        response.setData(exchange.getBody().getData());
-//        response.setCode(9000);
-//        response.setMessage("Done");
-//        response.setTitle("SUCCESS");
-
-        return exchange.getBody();
     }
 
     public Response doBillPayment(final BillPaymentRequest request){
-        //TODO deduct amount from the bank account
 
         final DoBillPaymentRequest doBillPaymentRequest = billPaymentConversionHelper.toDoBillPaymentRequest(request);
 
@@ -84,31 +78,25 @@ public class BillPaymentHelper {
         headers.set("Content-Type", "application/json");
         headers.set("Accept", "*/*");
         headers.set("Authorization", TOKEN);
+        HttpEntity<DoBillPaymentRequest> headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
 
         /**Set service-provider header by considering the biller code*/
         switch (request.getBillerCode()){
-            case "GSMU003900":
+            case "dialog":
                 headers.set("service-provider", "Dialog");
-                break;
-
-            case "GSMU004900":
-                headers.set("service-provider", "Dialog");
-                break;
+                return apiClient.postForObject("https://localhost:8243/dialog-bill-pay/1.0/dialog/bill/pay", headerRequest, Response.class );
 
             case "mobitel":
-                headers.set("service-provider", "Mobitel");
-                break;
+                headers.set("service-provider", "Dialog");
+                return apiClient.postForObject("https://localhost:8243/mobitel-bill-pay/1.0/mobitel/bill/pay", headerRequest, Response.class );
 
             case "etisalat":
                 headers.set("service-provider", "Etisalat");
-                break;
+                return apiClient.postForObject("https://localhost:8243/etisalat-bill-pay/1.0/etisalat/bill/pay", headerRequest, Response.class );
 
             default:
                 headers.set("service-provider", "");
+                return null;
         }
-
-        HttpEntity<DoBillPaymentRequest> headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
-        return apiClient.postForObject("https://localhost:8243/dialog-bill-pay/1.0/dialog/bill/pay", headerRequest, Response.class );
     }
-
 }
