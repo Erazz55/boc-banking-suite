@@ -1,5 +1,6 @@
 package com.icptechno.admincore.features.billpayment.payload;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

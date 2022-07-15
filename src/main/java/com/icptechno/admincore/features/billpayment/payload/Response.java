@@ -2,6 +2,7 @@ package com.icptechno.admincore.features.billpayment.payload;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
