@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Log
 public class BillPaymentHelper {
 
-    final static String TOKEN = "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbiIsImF1dCI6IkFQUExJQ0FUSU9OIiwiYXVkIjoiMU8xN211eHBSVXN1andUaDdhdUxHMWc3NEhzYSIsIm5iZiI6MTY1Nzg3NTM0MCwiYXpwIjoiMU8xN211eHBSVXN1andUaDdhdUxHMWc3NEhzYSIsInNjb3BlIjoiZGVmYXVsdCIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTY1NzkxMTM0MCwiaWF0IjoxNjU3ODc1MzQwLCJqdGkiOiIzYjU3OTIwYi0wMGRmLTQ5NDQtOTg2Yi1iYTkyODkyZWNiZjMifQ.g_9h76rsi_FQx88qXyoYL8SDTs3VQwVU_AJoJV7LDjbCL8_tJgVzCfc-5oXx63liAczrkkbiCCTKI67vjJAHgNTZRVuAbALWJmI0IvbYFfe0kKqhhKnw5eq-HyXlrGFa47HCWBzH9GM4j95_2ybP04DByACb6XyyVEm1LcL7Fzxq6ud57UeAjOYmcJD8Wq5zKLX1VSIYV9UDMgU3ZhncMDIN4u7-clScTfNqD2uKPvhkd_Y9Bs05bjYdHSwUdZDeZgIKgVaTIUvUBFlNnclxYO87DeAvK-D2qdH1wrbwVAduo_rlJsd8ejsEqQR4W4wwA6fqcA8ySlN07XV2ni1ENg" ;
+    final static String TOKEN = "Bearer eyJ4NXQiOiJNell4TW1Ga09HWXdNV0kwWldObU5EY3hOR1l3WW1NNFpUQTNNV0kyTkRBelpHUXpOR00wWkdSbE5qSmtPREZrWkRSaU9URmtNV0ZoTXpVMlpHVmxOZyIsImtpZCI6Ik16WXhNbUZrT0dZd01XSTBaV05tTkRjeE5HWXdZbU00WlRBM01XSTJOREF6WkdRek5HTTBaR1JsTmpKa09ERmtaRFJpT1RGa01XRmhNelUyWkdWbE5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhZG1pbiIsImF1dCI6IkFQUExJQ0FUSU9OIiwiYXVkIjoiMU8xN211eHBSVXN1andUaDdhdUxHMWc3NEhzYSIsIm5iZiI6MTY1ODEzNzY5NiwiYXpwIjoiMU8xN211eHBSVXN1andUaDdhdUxHMWc3NEhzYSIsInNjb3BlIjoiZGVmYXVsdCIsImlzcyI6Imh0dHBzOlwvXC9sb2NhbGhvc3Q6OTQ0M1wvb2F1dGgyXC90b2tlbiIsImV4cCI6MTY1ODE3MzY5NiwiaWF0IjoxNjU4MTM3Njk2LCJqdGkiOiJlMDNjZTM1Ny01NDQ1LTRiOGQtYTY0OC1mODQ3MGUwZTFhZjUifQ.aYTgK44kLcGD3BY3TTDnTySwD3UgjvQfMH6eEt7oR2RJwuqUXPZFw0ouWgvZw-pJKbg7QII1qmmoshBfPMDKKobC1GsEPaRwpaCXRj2JL4aqibdmc1JPBnDUqqXi6jRaZb-3Qjg2fiFXOJQ80JKguP5EgxDC3dgKXXxhUmuoP960PHVSdndl3r3KJ_aM1JkdYpjVbZu_eOLS8WHl4doWO_qRUNJQyTfHbGxxuhUMgwG4Usz3RuLfq69YfNX0z-ohRl8fuWwk1CXnE94GmIsocx4k0d39ZvX3_dIRz-jTPtLyvPHkm-TeKYQIIxMzcOU23KxtKZ3OMIBzHOKPuknOEQ" ;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -32,13 +32,16 @@ public class BillPaymentHelper {
         headers.set("Content-Type", "application/json");
         headers.set("Accept", "*/*");
         headers.set("Authorization",TOKEN) ;
-        HttpEntity headerRequest = new HttpEntity(headers);
+        HttpEntity headerRequest;
 
         /**Set service-provider header by considering the biller code*/
         switch (request.getBiller()){
             case "dialog":
                 headers.set("service-provider", "Dialog");
+                headerRequest = new HttpEntity(headers);
+                System.out.println("--------------"+headers);
                 return restTemplate.exchange(
+
                         "https://localhost:8243/dialog-bill-pay/1.0/dialog/{mobile}/check/bill",
                         HttpMethod.GET,
                         headerRequest,
@@ -47,6 +50,7 @@ public class BillPaymentHelper {
 
             case "mobitel":
                 headers.set("service-provider", "Mobitel");
+                headerRequest = new HttpEntity(headers);
                 return restTemplate.exchange(
                         "https://localhost:8243/mobitel-bill-pay/1.0/mobitel/{mobile}/check/bill",
                         HttpMethod.GET,
@@ -56,6 +60,7 @@ public class BillPaymentHelper {
 
             case "etisalat":
                 headers.set("service-provider", "Etisalat");
+                headerRequest = new HttpEntity(headers);
                 return restTemplate.exchange(
                         "https://localhost:8243/etisalat-bill-pay/1.0/etisalat/{mobile}/check/bill",
                         HttpMethod.GET,
@@ -64,7 +69,7 @@ public class BillPaymentHelper {
                         request.getMobile()).getBody();
 
             default:
-                headers.set("service-provider", "");
+
                 return null;
         }
 
@@ -78,24 +83,28 @@ public class BillPaymentHelper {
         headers.set("Content-Type", "application/json");
         headers.set("Accept", "*/*");
         headers.set("Authorization", TOKEN);
-        HttpEntity<DoBillPaymentRequest> headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
+        HttpEntity<DoBillPaymentRequest> headerRequest;
 
         /**Set service-provider header by considering the biller code*/
-        switch (request.getBillerCode()){
+        String data = request.getBillerCode().split("-")[0];
+
+        switch (data){
             case "dialog":
                 headers.set("service-provider", "Dialog");
+                headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
                 return apiClient.postForObject("https://localhost:8243/dialog-bill-pay/1.0/dialog/bill/pay", headerRequest, Response.class );
 
             case "mobitel":
-                headers.set("service-provider", "Dialog");
+                headers.set("service-provider", "Mobitel");
+                headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
                 return apiClient.postForObject("https://localhost:8243/mobitel-bill-pay/1.0/mobitel/bill/pay", headerRequest, Response.class );
 
             case "etisalat":
                 headers.set("service-provider", "Etisalat");
+                headerRequest = new HttpEntity<>(doBillPaymentRequest, headers);
                 return apiClient.postForObject("https://localhost:8243/etisalat-bill-pay/1.0/etisalat/bill/pay", headerRequest, Response.class );
 
             default:
-                headers.set("service-provider", "");
                 return null;
         }
     }

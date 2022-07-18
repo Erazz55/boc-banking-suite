@@ -25,7 +25,7 @@ public class BillPaymentConversionHelper {
         return DoBillPaymentRequest
                 .builder()
                 .amount(request.getAmount())
-                .billerCode(request.getBillerCode())
+                .billerCode(request.getBillerCode().split("-")[1])
                 .mobile(request.getMobile())
                 .build();
     }
